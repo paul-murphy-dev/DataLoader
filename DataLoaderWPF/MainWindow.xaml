@@ -1,0 +1,24 @@
+﻿<Window x:Class="DataLoaderWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:DataLoaderWPF.Helpers"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <helpers:ReverseBool x:Key="InvBool"/>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ContentPresenter Grid.Row="0" Content="{Binding ViewModel.ActiveModel}"/>
+        <StackPanel Orientation="Horizontal" 
+                    Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    Margin="5">
+            <Button Margin="1" Width="75" Content="Prev" Command="{Binding ViewModel.PrevCommand}"/>
+            <Button Margin="1" Width="75" Content="Next" Command="{Binding ViewModel.NextCommand}"/>
+            <Button Margin="1" Width="75" Content="Finish" Command="{Binding ViewModel.FinishCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource InvBool}}"/>
+        </StackPanel>
+    </Grid>
+</Window>

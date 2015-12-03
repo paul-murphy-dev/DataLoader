@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="DataLoaderWPF.VIews.MappingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:localControls="clr-namespace:DataLoaderWPF.Controls"
+             xmlns:helpers="clr-namespace:DataLoaderWPF.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <helpers:InverseBooleanToVisibilityConverter x:Key="InvBool2Vis"/>
+        <BooleanToVisibilityConverter x:Key="Bool2Vis"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>        
+        <TextBlock Margin="2" Text="Folder:"/>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="2" >
+            <TextBox Text="{Binding FilesFolder}" Width="200" />
+            <Button Command="{Binding SelectFolderCommand}" Content="..." Width="20" Height="20"/>
+            <localControls:GifImage Width="20" Height="20" GifSource="/Resources/Images/loading.gif" Visibility="{Binding IsBusy, Converter={StaticResource Bool2Vis}}"/>
+        </StackPanel>        
+        <TextBlock Grid.Row="1" Grid.Column="0" Margin="2" Text="Delimiter:"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="2" Text="{Binding Delimiter}" Width="20"  HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Margin="2" Text="Scrub Chars:" ToolTip="Characters to scrub out of detected fields."/>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="2" Text="{Binding ScrubChars}" Width="200" HorizontalAlignment="Left"/>
+        
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin="2" Text="File Progress:" Visibility="{Binding IsBusy, Converter={StaticResource Bool2Vis}}"/>
+        <ProgressBar Grid.Row="3" Grid.Column="1" Margin="4" Height="20" Value="{Binding FileProgress}" Visibility="{Binding IsBusy, Converter={StaticResource Bool2Vis}}"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Margin="2" Text="Table Progress:" Visibility="{Binding IsBusy, Converter={StaticResource Bool2Vis}}"/>
+        <ProgressBar Grid.Row="4" Grid.Column="1" Margin="4" Height="20" Value="{Binding TableProgress}" Visibility="{Binding IsBusy, Converter={StaticResource Bool2Vis}}"/>
+        <TextBlock Grid.Row="5" Grid.Column="0" Margin="2" Text="Insert Progress:" Visibility="{Binding IsBusy, Converter={StaticResource Bool2Vis}}"/>
+        <ProgressBar Grid.Row="5" Grid.Column="1" Margin="4" Height="20" Value="{Binding InsertProgress}" Visibility="{Binding IsBusy, Converter={StaticResource Bool2Vis}}"/>
+        <!--<GroupBox Margin="5"
+                  Header="Source Tables" 
+                  Grid.Column="0" 
+                  Grid.Row="1">
+            <ListBox Margin="5"
+                     ItemsSource="{Binding SourceItems}"/>
+        </GroupBox>
+        <GridSplitter Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="4" Background="LightGray"/>
+        <GroupBox Margin="5"
+                  Header="Destination Tables" 
+                  Grid.Column="1" 
+                  Grid.Row="1">
+            <ListBox Margin="5"
+                     ItemsSource="{Binding DestItems}"/>
+        </GroupBox>-->
+    </Grid>
+</UserControl>
