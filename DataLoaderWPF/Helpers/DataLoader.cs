@@ -11,7 +11,7 @@ namespace DataLoaderWPF.Helpers
     public class DataLoader
     {
         private readonly string _connectionString;
-        private readonly char _delimieter;
+        private readonly char _delimiter;
         private readonly char[] _scrubChars;
         private readonly string[] _files;
 
@@ -19,7 +19,7 @@ namespace DataLoaderWPF.Helpers
         {
             _connectionString = connectionString;
             _files = files;
-            _delimieter = delimiter;
+            _delimiter = delimiter;
             _scrubChars = scrubChars;
         }
 
@@ -42,13 +42,13 @@ namespace DataLoaderWPF.Helpers
                 if (lineNumber == 1)
                 {
                     //this is the first line, contains column headers
-                    columnHeaders = line.Split(_delimieter);
+                    columnHeaders = line.Split(_delimiter);
                     columnHeaders = columnHeaders.Select(a => a.Trim().Replace("\"", string.Empty)).ToArray();
                 }
                 else
                 {
                     //this is a data line
-                    var dataTokens = line.Split(_delimieter);
+                    var dataTokens = line.Split(_delimiter);
                     dataTokens = dataTokens.Select(a => a.Trim()).ToArray();
 
                     if (dt.Columns.Count == 0)
@@ -281,32 +281,26 @@ namespace DataLoaderWPF.Helpers
             {
                 Type t = null;
 
-                if (columnName.Trim().ToLower().EndsWith("id"))
+                if (dataTokens[idx].Contains(".") && double.TryParse(dataTokens[idx], out testDbl))
+                {
+                    t = typeof (double);
+                }
+                if (t == null && DateTime.TryParse(dataTokens[idx], out testDate))
+                {
+                    t = typeof (DateTime);
+                }
+                //try int
+                if (t == null && int.TryParse(dataTokens[idx], out testInt))
                 {
                     t = typeof (int);
                 }
-                else
-                {
-                    if (dataTokens[idx].StartsWith("."))
-                    {
-                        t = typeof (double);
-                    }
-                    if (t == null && DateTime.TryParse(dataTokens[idx], out testDate))
-                    {
-                        t = typeof (DateTime);
-                    }
-                    //try int
-                    if (t == null && int.TryParse(dataTokens[idx], out testInt))
-                    {
-                        t = typeof (int);
-                    }
 
-                    //default to string
-                    if (t == null)
-                    {
-                        t = typeof (string);
-                    }
+                //default to string
+                if (t == null)
+                {
+                    t = typeof (string);
                 }
+
 
                 var col = new DataColumn(columnName, t);
                 dt.Columns.Add(col);
